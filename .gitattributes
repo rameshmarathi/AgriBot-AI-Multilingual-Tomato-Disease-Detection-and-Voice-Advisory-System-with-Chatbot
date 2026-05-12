@@ -1,0 +1,29 @@
+# Normalize text files to LF in the repository
+* text=auto
+
+# Explicit text files with LF line endings
+*.py text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+
+# Treat binary files as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.h5 binary
+*.exe binary
+*.zip binary
+*.mp3 binary
+*.svg text

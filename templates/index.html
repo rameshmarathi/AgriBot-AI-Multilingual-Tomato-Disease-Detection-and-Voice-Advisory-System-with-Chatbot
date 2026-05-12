@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block pagetitle %}Tomato Disease Prediction | Harshith AI{% endblock pagetitle %}</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Red+Rose:wght@600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Toastr notifications -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+
+  <!-- Custom CSS (Embedded and Updated for Modern Look) -->
+  <style>
+    /* ---------------------------------------------------- */
+    /* --- Base/Utility Styles --- */
+    /* ---------------------------------------------------- */
+
+    :root {
+      --primary-green: #38a169; /* Success/Upload */
+      --secondary-red: #ef3a3a; /* Accent/Tomato */
+      --text-dark: #262626;
+      --text-light: #444444;
+      --bg-light: #f8f9fa;
+      --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background-image: url("../static/images/background.jpg");
+      background-repeat: no-repeat;
+      background-size: cover; /* Changed from 100% 130% to cover */
+      background-position: center;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-light);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html {
+      position: relative;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--primary-green);
+    }
+
+    /* ---------------------------------------------------- */
+    /* --- Header/Navigation --- */
+    /* ---------------------------------------------------- */
+
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar-brand {
+      font-family: 'Red Rose', cursive;
+      font-weight: 700;
+      color: var(--primary-green) !important;
+    }
+    
+    .navbar-nav .nav-link {
+        font-weight: 500;
+        color: var(--text-dark);
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar-nav .nav-item a.btn {
+        font-weight: 600;
+        border-radius: 0.5rem;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .navbar-nav .nav-item a.btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .top-nav-actions {
+      gap: 0.75rem;
+    }
+
+    /* ---------------------------------------------------- */
+    /* --- Main Upload Section --- */
+    /* ---------------------------------------------------- */
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    main #uploadImage {
+      padding-top: 50px;
+      padding-bottom: 100px;
+    }
+
+    #pageTitle {
+      font-family: 'Red Rose', cursive;
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 2.5rem;
+    }
+
+    #pageSubtitle {
+      font-weight: 400;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .agrimart-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(56, 161, 105, 0.15);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      height: 100%;
+    }
+
+    .agrimart-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(56, 161, 105, 0.12);
+      color: var(--primary-green);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .agrimart-card h5 {
+      color: var(--text-dark);
+      font-weight: 700;
+      margin: 0.9rem 0 0.65rem;
+    }
+
+    .agrimart-card p,
+    .agrimart-card li,
+    .agrimart-card a {
+      font-size: 0.95rem;
+    }
+
+    .agrimart-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0;
+    }
+
+    .agrimart-list li {
+      margin-bottom: 0.65rem;
+      color: var(--text-light);
+    }
+
+    .agrimart-meta {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eef2f0;
+    }
+
+    .agrimart-meta p {
+      margin-bottom: 0.45rem;
+      color: var(--text-light);
+    }
+
+    .agrimart-socials {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .agrimart-socials a {
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f7f4;
+      border: 1px solid #e3ece6;
+    }
+
+    .agrimart-socials img {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .agrimart-socials span {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .farmer-help-card {
+      border-color: rgba(239, 58, 58, 0.16);
+    }
+
+    .farmer-help-badge {
+      background: rgba(239, 58, 58, 0.12);
+      color: var(--secondary-red);
+    }
+
+    #drop-area {
+      background-color: white;
+      border: 3px dashed var(--primary-green);
+      border-radius: 1.5rem; /* Smoother corners */
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+      transition: box-shadow 0.3s;
+      width: 100%;
+    }
+
+    #drop-area:hover {
+        box-shadow: 0 0 20px rgba(56, 161, 105, 0.2); /* Green hover glow */
+    }
+
+    #preview-container {
+        margin-bottom: 1.5rem;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    #previewImage {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+        background-color: #f7f7f7;
+    }
+
+    .texts p {
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+    #dragText {
+        font-weight: 600;
+        color: var(--primary-green);
+        font-size: 1.1rem;
+    }
+
+    #fileTypeText {
+        font-weight: 400;
+        color: #8e8e8e;
+        font-size: 0.9rem;
+    }
+
+    /* Buttons */
+    #uploadButton {
+        border-radius: 2rem;
+        padding: 0.6rem 2rem;
+        font-weight: 600;
+        border: 2px solid var(--primary-green);
+        color: var(--primary-green);
+        transition: all 0.3s;
+    }
+
+    #uploadButton:hover {
+        background-color: var(--primary-green);
+        color: white;
+    }
+    
+    #speakButton {
+        border-radius: 2rem;
+        padding: 0.6rem 2rem;
+        font-weight: 600;
+        background-color: #ffc107; /* Bootstrap warning */
+        border: none;
+        transition: all 0.3s;
+    }
+    
+    #speakButton:hover {
+        background-color: #e0a800;
+    }
+
+    /* Results Area */
+    .resultArea {
+        margin-top: 1.5rem;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 1.5rem;
+    }
+    
+    .resultArea .list-group-item {
+        border: none;
+        padding: 0.5rem 0;
+        background: transparent;
+        align-items: flex-start;
+    }
+
+    .resultArea .list-group-item p {
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-right: 0.5rem;
+        min-width: 150px;
+    }
+
+    #result, #confidenceScore {
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-left: 0.5rem;
+    }
+    
+    #diseaseDescription {
+        flex-grow: 1;
+        padding-left: 0.5rem;
+    }
+    
+    /* FIX: Styling for the list now rendered as <ul>, relying on text content for numbering */
+    #diseaseDescription ul { 
+        list-style: none; /* Remove default bullets/numbers */
+        padding-left: 0;
+        margin-bottom: 0;
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+    
+    #diseaseDescription li {
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+    }
+    
+    /* Loading Area */
+    .loadingArea {
+        text-align: center;
+    }
+    .loadingArea .progress {
+        height: 10px;
+        border-radius: 5px;
+    }
+    #uploadStatus {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.9rem;
+        color: var(--primary-green);
+    }
+
+    /* ---------------------------------------------------- */
+    /* --- Footer --- */
+    /* ---------------------------------------------------- */
+
+    footer {
+      background-color: var(--bg-light) !important;
+      border-top: 1px solid #e0e0e0;
+      width: 100%;
+      padding: 1.5rem 0;
+      margin-top: auto;
+    }
+    
+    /* ---------------------------------------------------- */
+    /* --- Media Queries --- */
+    /* ---------------------------------------------------- */
+
+    @media (max-width: 991px) {
+      .navbar-collapse {
+        padding-top: 1rem;
+      }
+
+      .navbar-nav {
+        align-items: stretch !important;
+        gap: 0.5rem;
+      }
+
+      .navbar-nav .nav-link {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .top-nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-nav-actions .nav-item,
+      .top-nav-actions .nav-item.ms-lg-3 {
+        margin-left: 0 !important;
+      }
+
+      .top-nav-actions .btn,
+      #languageSelect {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 767px) {
+      main #uploadImage {
+        padding-top: 32px;
+        padding-bottom: 56px;
+      }
+
+      #pageTitle {
+        font-size: 2rem;
+      }
+
+      #pageSubtitle {
+        font-size: 1rem;
+      }
+
+      .agrimart-card {
+        margin-bottom: 1.25rem;
+      }
+
+      #drop-area {
+        padding: 30px 20px;
+      }
+
+      .d-flex.justify-content-center.gap-3.mb-4 {
+        flex-direction: column;
+      }
+
+      #uploadButton,
+      #speakButton {
+        width: 100%;
+      }
+
+      .resultArea .list-group-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .resultArea .list-group-item p {
+        margin-bottom: 0.2rem;
+        min-width: unset;
+      }
+      #diseaseDescription {
+          padding-left: 0;
+          margin-top: 0.5rem;
+          text-align: left; /* Keep lists readable */
+      }
+
+      .modal-dialog {
+        margin: 0.75rem;
+      }
+
+      #supImageMain {
+        max-height: 240px !important;
+        margin-bottom: 1rem;
+      }
+
+      #supSimage {
+        width: 100% !important;
+        max-width: 180px;
+        height: auto !important;
+      }
+    }
+
+    @media (max-width: 575px) {
+      .container-fluid.px-4,
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      #pageTitle {
+        font-size: 1.75rem;
+      }
+
+      #dragText {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light py-3">
+      <div class="container-fluid px-4">
+        <span class="navbar-brand fs-4 fw-bold">AGRIBOT AI</span>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center top-nav-actions">
+              <li class="nav-item"><a href="/about" class="nav-link" id="navAbout">About Project</a></li>
+              <li class="nav-item"><a href="/contact" class="nav-link" id="navContact">Contact</a></li>
+
+              <!-- Chat Bot Button -->
+              <li class="nav-item">
+                <a href="/chat-bot" target="_blank" rel="noopener noreferrer"
+                   class="nav-link btn btn-warning text-white px-3" id="navChatBot">Chat Bot</a>
+              </li>
+
+              <!-- Market Button (added) -->
+              <li class="nav-item">
+                <a href="/market" target="_blank" rel="noopener noreferrer"
+                   class="nav-link btn btn-info text-white px-3" id="navMarket">Market</a>
+              </li>
+
+              <!-- Language Selector -->
+              <li class="nav-item ms-lg-3">
+                <select id="languageSelect" class="form-select form-select-sm w-auto">
+                  <option value="en">English</option>
+                  <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="hi">हिन्दी (Hindi)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                </select>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  {% block body %}
+  <!-- Main -->
+  <main>
+    <section id="uploadImage" class="py-5">
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-10 text-center">
+            <h4 id="pageTitle" class="mt-4">Tomato Disease Classification</h4>
+            <p id="pageSubtitle" class="lead">Upload an image of a tomato leaf to instantly predict and learn about potential diseases.</p>
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-start g-4">
+          <div class="col-xl-3 col-lg-4 col-md-10 col-12">
+            <aside class="agrimart-card">
+              <span class="agrimart-badge" id="agrimartBadge">Agrimart</span>
+              <h5 id="agrimartTitle">Agrimart India</h5>
+              <p id="agrimartDescription">Based at Bangalore, Agrimart is marketed by Ratnagiri Impex Pvt. Ltd. with a long agriculture business background.</p>
+
+              <ul class="agrimart-list">
+                <li><strong id="agrimartProductsLabel">Products:</strong> <span id="agrimartProductsText">seeds, fertilizers, fungicides, insecticides, and crop nutrition products.</span></li>
+                <li><strong id="agrimartOfficeLabel">Office:</strong> <span id="agrimartOfficeText">Mysore Road, Bangalore - 560026</span></li>
+              </ul>
+
+              <div class="agrimart-meta">
+                <p><strong id="agrimartDomainLabel">Domain:</strong> <a href="https://agrimart.in/" target="_blank" rel="noopener noreferrer">agrimart.in</a></p>
+                <p><strong id="agrimartEmailLabel">Email:</strong> <a href="mailto:ask@agrimart.in">ask@agrimart.in</a></p>
+                <p><strong id="agrimartCallLabel">Call:</strong> <a href="tel:+917393938938">+91 7393 938 938</a></p>
+              </div>
+
+              <div class="agrimart-socials">
+                <a href="https://www.instagram.com/agrimart20" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <span>IG</span>
+                </a>
+                <a href="https://www.linkedin.com/company/agrimart20" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <img src="../static/images/linkedin.svg" alt="LinkedIn" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCPChKPEwHssr4WmuOxrJY9g?view_as=subscriber" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                  <span>YT</span>
+                </a>
+                <a href="https://www.facebook.com/agrimart20" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <span>FB</span>
+                </a>
+              </div>
+            </aside>
+          </div>
+          <div class="col-xl-6 col-lg-8 col-md-10 col-12">
+            <div id="drop-area" class="p-4 rounded-4">
+              <form id="customForm" method="post" enctype="multipart/form-data">
+                
+                <!-- Image Preview / Drop Zone Placeholder -->
+                <div class="mb-4 text-center" id="preview-container">
+                  <img id="previewImage" src="../static/images/drag_drop.svg" alt="Drop Zone" class="img-fluid rounded" />
+                  <div class="texts mt-3">
+                    <p id="dragText">Drag & Drop your image here</p>
+                    <p id="fileTypeText">PNG, JPG, JPEG, WEBP or BMP formats are accepted.</p>
+                  </div>
+                </div>
+
+                <input type="file" name="file" id="fileElement" accept="image/*" class="form-control d-none"/>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                  <button type="button" class="btn btn-outline-success" id="uploadButton">Upload Image</button>
+                  <!-- Live Camera button removed -->
+                </div>
+
+                <!-- Loading Area -->
+                <div class="loadingArea mt-3 p-3 bg-light rounded" style="display:none;">
+                  <div class="progress mb-2">
+                    <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:100%;"></div>
+                  </div>
+                  <span id="uploadStatus" class="d-block text-start text-success fw-bold">Processing...</span>
+                  <span class="cancelUpload btn btn-sm btn-link text-danger" id="cancelUploadText">Cancel</span>
+                </div>
+
+                <!-- Result Area -->
+                <div class="resultArea mt-4" style="display:none;">
+                  <h5 class="text-center mb-3 text-dark fw-bold" id="predictionHeading">Prediction Result</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex"><p id="resultLabel" class="mb-0">Result:</p><span id="result"></span></li>
+                    <li class="list-group-item d-flex"><p id="confidenceLabel" class="mb-0">Confidence Score:</p><span id="confidenceScore"></span></li>
+                    <li class="list-group-item d-flex"><p id="descriptionLabel" class="mb-0">Description:</p><span id="diseaseDescription"></span></li>
+                  </ul>
+                </div>
+              </form>
+              <button type="button" id="speakButton" class="btn btn-warning mt-4 w-100">🔊 Speak Description</button>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-10 col-md-10 col-12">
+            <aside class="agrimart-card farmer-help-card">
+              <span class="agrimart-badge farmer-help-badge" id="farmerHelpBadge">Farmer Helpline</span>
+              <h5 id="farmerHelpTitle">Language-Based Farmer Support</h5>
+              <p id="farmerHelpDescription">Choose your preferred language to see a suitable local contact or helpline for farming support.</p>
+
+              <ul class="agrimart-list">
+                <li><strong id="farmerHelpSupportLabel">Support For:</strong> <span id="farmerHelpSupportText">General farming help</span></li>
+                <li><strong id="farmerHelpContactLabel">Contact:</strong> <span id="farmerHelpContactText">Krishi expert</span></li>
+                <li><strong id="farmerHelpPhoneLabel">Phone:</strong> <a id="farmerHelpPhoneLink" href="tel:+9108257204370">+91 08257-204370</a></li>
+                <li><strong id="farmerHelpLanguagesLabel">Languages:</strong> <span id="farmerHelpLanguagesText">Kannada + English</span></li>
+                <li><strong id="farmerHelpBestForLabel">Best For:</strong> <span id="farmerHelpBestForText">Local farming help, soil testing, training</span></li>
+              </ul>
+
+              <div class="agrimart-meta">
+                <p><strong id="farmerHelpNoteLabel">Note:</strong> <span id="farmerHelpNoteText">Government experts available.</span></p>
+                <p><strong id="farmerHelpUseGuideLabel">Use Guide:</strong> <span id="farmerHelpUseGuideText">Kannada farmers can use this contact for local support.</span></p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span id="footerText" class="text-muted">All rights reserved</span>
+    </div>
+  </footer>
+  {% endblock body %}
+
+  <!-- JS Libraries -->
+  {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Logic (Embedded from script.js, cleaned and fixed) -->
+    <script>
+      $(document).ready(function () {
+        // === Element References ===
+        const dropArea = document.querySelector("#drop-area");
+        const uploadButton = document.querySelector("#uploadButton");
+        const input = document.querySelector("#fileElement");
+        const video = document.getElementById("camera");
+        const languageSelect = document.getElementById("languageSelect");
+        const speakButton = document.getElementById("speakButton");
+
+        let file = null;
+        let currentLang = "en";
+        let lastDescription = []; // stored as array of points
+        let lastPredictionLabel = "";
+        let lastConfidence = "";
+        let speaking = false;
+        let availableVoices = [];
+        let currentSpeechAudio = null;
+
+        // === Multilingual Texts (Simplified) ===
+        const translations = {
+          en: {
+            title: "Tomato Disease Classification",
+            subtitle: "Upload an image of a tomato leaf to instantly predict and learn about potential diseases.",
+            upload: "Upload Image",
+            drag: "Drag & Drop your image here",
+            filetype: "PNG, JPG, JPEG, WEBP or BMP formats are accepted.",
+            result: "Result:",
+            confidence: "Confidence Score:",
+            description: "Description:",
+            speak: "🔊 Speak Description",
+            footer: "All rights reserved",
+            invalidFile: "Invalid file format! Please upload a valid image.",
+            uploadError: "Error occurred while uploading."
+          },
+          kn: {
+            title: "ಟೊಮ್ಯಾಟೊ ರೋಗ ವರ್ಗೀಕರಣ",
+            subtitle: "ಟೊಮ್ಯಾಟೊ ಎಲೆಯ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ, ರೋಗವನ್ನು ತಕ್ಷಣವೇ ಪತ್ತೆಹಚ್ಚಿ ಮತ್ತು ಅದರ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ.",
+            upload: "ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+            drag: "ಚಿತ್ರವನ್ನು ಇಲ್ಲಿ ಎಳೆದು ಬಿಡಿ",
+            filetype: "png, jpg, jpeg, webp ಅಥವಾ bmp ಸ್ವರೂಪಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ.",
+            result: "ಫಲಿತಾಂಶ:",
+            confidence: "ನಂಬಿಕೆ ಅಂಕೆ:",
+            description: "ವಿವರಣೆ:",
+            speak: "🔊 ವಿವರಣೆಯನ್ನು ಓದಿ",
+            footer: "ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ",
+            invalidFile: "ಅಮಾನ್ಯ ಫೈಲ್! ಮಾನ್ಯ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
+            uploadError: "ಅಪ್‌ಲೋಡ್ ಮಾಡುವಾಗ ದೋಷ ಸಂಭವಿಸಿದೆ."
+          },
+          te: {
+            title: "టమోటా వ్యాధి వర్గీకరణ",
+            subtitle: "టమోటా ఆకు చిత్రాన్ని అప్‌లోడ్ చేసి, వ్యాధిని తక్షణమే గుర్తించి, దాని గురించి తెలుసుకోండి.",
+            upload: "చిత్రాన్ని అప్‌లోడ్ చేయండి",
+            drag: "చిత్రాన్ని ఇక్కడకి లాగి వదలండి",
+            filetype: "png, jpg, jpeg, webp లేదా bmp ఫార్మాట్‌లు అంగీకరించబడతాయి.",
+            result: "ఫలితం:",
+            confidence: "నమ్మక స్కోరు:",
+            description: "వివరణ:",
+            speak: "🔊 వివరణను చదవండి",
+            footer: "అన్ని హక్కులు కాపాడబడ్డాయి",
+            invalidFile: "చెల్లని ఫైల్! సరైన చిత్రాన్ని అప్‌లోడ్ చేయండి.",
+            uploadError: "అప్‌లోడ్ చేస్తూ లోపం సంభవించింది."
+          },
+          hi: {
+            title: "टमाटर रोग वर्गीकरण",
+            subtitle: "टमाटर की पत्ती की छवि अपलोड करें, रोग की तुरंत पहचान करें और उसके बारे में जानें।",
+            upload: "छवि अपलोड करें",
+            drag: "अपनी छवि यहाँ खींचें और छोड़ें",
+            filetype: "png, jpg, jpeg, webp या bmp प्रारूप स्वीकार किए जाते हैं।",
+            result: "परिणाम:",
+            confidence: "विश्वास स्कोर:",
+            description: "विवरण:",
+            speak: "🔊 विवरण पढ़ें",
+            footer: "सर्वाधिकार सुरक्षित",
+            invalidFile: "अमान्य फ़ाइल! कृपया मान्य छवि अपलोड करें।",
+            uploadError: "अपलोड के दौरान त्रुटि हुई।"
+          },
+          ta: {
+            title: "தக்காளி நோய் வகைப்படுத்தல்",
+            subtitle: "தக்காளி இலை படத்தை பதிவேற்றி, நோயை உடனடியாகக் கண்டறிந்து, அதைப் பற்றி அறிந்து கொள்ளுங்கள்.",
+            upload: "படத்தை பதிவேற்றவும்",
+            drag: "படத்தை இங்கே இழுத்து விடவும்",
+            filetype: "png, jpg, jpeg, webp அல்லது bmp வடிவங்கள் ஏற்றுக்கொள்ளப்படுகின்றன.",
+            result: "விளைவு:",
+            confidence: "நம்பிக்கை மதிப்பு:",
+            description: "விளக்கம்:",
+            speak: "🔊 விளக்கத்தை வாசிக்கவும்",
+            footer: "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டுள்ளன",
+            invalidFile: "தவறான கோப்பு! சரியான படத்தை பதிவேற்றவும்.",
+            uploadError: "பதிவேற்றும் போது பிழை ஏற்பட்டது."
+          }
+        };
+
+        // Disease translations dictionary (frontend labels)
+        const diseaseTranslations = {
+          "Tomato Mosaic Virus": { en: "Tomato Mosaic Virus", hi: "टमाटर मोज़ेक वायरस", kn: "ಟೊಮ್ಯಾಟೊ ಮೋಸೈಕ್ ವೈರಸ್", te: "టమోటా మోజాయిక్ వైరస్", ta: "தக்காளி மோசைக் வைரஸ்" },
+          "Target Spot": { en: "Target Spot", hi: "लक्ष्य धब्बा", kn: "ಲಕ್ಷ್ಯ ದಾಗೆ", te: "లక్ష్య బిಂದುవు", ta: "இலக்கு தழுவல்" },
+          "Bacterial Spot": { en: "Bacterial Spot", hi: "बैक्टीरियल स्पॉट", kn: "ಜೀವಾಣು ಕಲೆ", te: "బాక్టీరియల్ మచ్చ", ta: "பாக்டீரியல் புள்ளி" },
+          "Early Blight": { en: "Early Blight", hi: "प्रारंभिक जलन", kn: "ಆರಂಭಿಕ ಸುಟ್ಟುಹೋಗುವಿಕೆ", te: "ప్రాథమిక చిటుపు", ta: "ஆரம்ப இரும்பு" },
+          "Late Blight": { en: "Late Blight", hi: "देर से जलन", kn: "ನಂತರದ ಸುಟ್ಟುಹೋಗುವುದು", te: "సమయానంతరం బ్లైట్", ta: "தாமதமான நாசம்" },
+          "Leaf Mold": { en: "Leaf Mold", hi: "पत्ती फफूंदी", kn: "ಎಲೆ ಫಂಗೆಸ್", te: "ఆకు దడ", ta: "இலை பூஞ்சை" },
+          "Septoria Leaf Spot": { en: "Septoria Leaf Spot", hi: "सेप्टोरिया पत्ती धब्बा", kn: "ಸೆಪ್ಟೋರಿಯಾ ಎಲೆ ಕಲೆ", te: "సెప్టోరియా ఆకు మచ్చ", ta: "செப்டோரியா இலைக் கீற்று" },
+          "Spider Mites": { en: "Spider Mites", hi: "मकड़ी के फंदे कीट", kn: "ಚೆಳ್ಳಿ ಕೀಟಗಳು", te: "సపారు పురుగు", ta: "சிலந்தி பூச்சிகள்" },
+          "Bacterial Speck": { en: "Bacterial Speck", hi: "बैक्टीरियल स्पेक", kn: "ಬ್ಯಾಕ್ಟೀರಿಯಾದ ಸ್ಪೆಕ್", te: "బాక్టీరియల్ స్పెక్", ta: "பாக்டீரியல் சிறுநீர்" },
+          "Healthy": { en: "Healthy", hi: "स्वस्थ", kn: "ಆರೋಗ್ಯಕರ", te: "ఆరోగ్యకరంగా", ta: "ஆரோக்கியம்" }
+        };
+
+        function getUiExtras(lang) {
+          const extras = {
+            en: { navAbout: "About Project", navContact: "Contact", navChatBot: "Chat Bot", navMarket: "Market", predictionHeading: "Prediction Result", processing: "Processing...", cancel: "Cancel", speaking: "Speaking...", noDescription: "No description available" },
+            hi: { navAbout: "परियोजना", navContact: "संपर्क", navChatBot: "चैट बॉट", navMarket: "मार्केट", predictionHeading: "पूर्वानुमान परिणाम", processing: "प्रोसेस हो रहा है...", cancel: "रद्द करें", speaking: "बोला जा रहा है...", noDescription: "कोई विवरण उपलब्ध नहीं है" },
+            kn: { navAbout: "ಯೋಜನೆ", navContact: "ಸಂಪರ್ಕ", navChatBot: "ಚಾಟ್ ಬಾಟ್", navMarket: "ಮಾರ್ಕೆಟ್", predictionHeading: "ಭವಿಷ್ಯ ಫಲಿತಾಂಶ", processing: "ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ...", cancel: "ರದ್ದುಮಾಡಿ", speaking: "ಓದುತ್ತಿದೆ...", noDescription: "ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ" },
+            te: { navAbout: "ప్రాజెక్ట్", navContact: "సంప్రదింపు", navChatBot: "చాట్ బాట్", navMarket: "మార్కెట్", predictionHeading: "అంచనా ఫలితం", processing: "ప్రాసెస్ అవుతోంది...", cancel: "రద్దు", speaking: "చదువుతోంది...", noDescription: "వివరణ అందుబాటులో లేదు" },
+            ta: { navAbout: "திட்டம்", navContact: "தொடர்பு", navChatBot: "சாட் பாட்", navMarket: "மார்க்கெட்", predictionHeading: "கணிப்பு முடிவு", processing: "செயலாக்கப்படுகிறது...", cancel: "ரத்து", speaking: "வாசிக்கிறது...", noDescription: "விளக்கம் இல்லை" }
+          };
+
+          return extras[lang] || extras.en;
+        }
+
+        async function refreshPredictionTranslations(lang) {
+          if (!lastPredictionLabel) return;
+
+          const translatedLabel = (diseaseTranslations[lastPredictionLabel] && diseaseTranslations[lastPredictionLabel][lang])
+            ? diseaseTranslations[lastPredictionLabel][lang]
+            : lastPredictionLabel;
+          $("#result").text(translatedLabel);
+          $("#confidenceScore").text(lastConfidence || "N/A");
+
+          try {
+            const descRes = await axios.post("/describe", { disease: lastPredictionLabel, lang });
+            if (descRes.status === 200 && descRes.data && descRes.data.description) {
+              lastDescription = Array.isArray(descRes.data.description) ? descRes.data.description : [descRes.data.description];
+            }
+          } catch (err) {
+            console.error("Description refresh failed", err);
+          }
+
+          if (Array.isArray(lastDescription) && lastDescription.length) {
+            const listHtml = lastDescription.map(pt => /<a\s+/i.test(pt) ? `<li>${pt}</li>` : `<li>${escapeHtml(pt)}</li>`).join("");
+            $("#diseaseDescription").html(`<ul>${listHtml}</ul>`);
+          } else {
+            $("#diseaseDescription").text(getUiExtras(lang).noDescription);
+          }
+        }
+
+        // === Update UI Language ===
+        function updateLanguage(lang) {
+          const t = translations[lang] || translations.en;
+          const extra = getUiExtras(lang);
+          const agrimartText = {
+            en: {
+              badge: "Agrimart",
+              title: "Agrimart India",
+              description: "Based at Bangalore, Agrimart is marketed by Ratnagiri Impex Pvt. Ltd. with a long agriculture business background.",
+              productsLabel: "Products:",
+              productsText: "seeds, fertilizers, fungicides, insecticides, and crop nutrition products.",
+              officeLabel: "Office:",
+              officeText: "Mysore Road, Bangalore - 560026",
+              domainLabel: "Domain:",
+              emailLabel: "Email:",
+              callLabel: "Call:"
+            },
+            hi: {
+              badge: "एग्रीमार्ट",
+              title: "एग्रीमार्ट इंडिया",
+              description: "बैंगलोर स्थित एग्रीमार्ट को Ratnagiri Impex Pvt. Ltd. संचालित करता है और इसका कृषि व्यवसाय में लंबा अनुभव है।",
+              productsLabel: "उत्पाद:",
+              productsText: "बीज, उर्वरक, फंगिसाइड, इंसेक्टिसाइड और फसल पोषण उत्पाद।",
+              officeLabel: "कार्यालय:",
+              officeText: "मैसूर रोड, बैंगलोर - 560026",
+              domainLabel: "डोमेन:",
+              emailLabel: "ईमेल:",
+              callLabel: "कॉल:"
+            },
+            kn: {
+              badge: "ಏಗ್ರಿಮಾರ್ಟ್",
+              title: "ಏಗ್ರಿಮಾರ್ಟ್ ಇಂಡಿಯಾ",
+              description: "ಬೆಂಗಳೂರು ಆಧಾರಿತ ಏಗ್ರಿಮಾರ್ಟ್ ಅನ್ನು Ratnagiri Impex Pvt. Ltd. ಮಾರುಕಟ್ಟೆಗೆ ತರುತ್ತದೆ ಮತ್ತು ಕೃಷಿ ವ್ಯವಹಾರದಲ್ಲಿ ದೀರ್ಘ ಅನುಭವ ಹೊಂದಿದೆ.",
+              productsLabel: "ಉತ್ಪನ್ನಗಳು:",
+              productsText: "ಬೀಜಗಳು, ಗೊಬ್ಬರಗಳು, ಫಂಗಿಸೈಡ್, ಇನ್ಸೆಕ್ಟಿಸೈಡ್ ಮತ್ತು ಬೆಳೆ ಪೋಷಣಾ ಉತ್ಪನ್ನಗಳು.",
+              officeLabel: "ಕಚೇರಿ:",
+              officeText: "ಮೈಸೂರು ರಸ್ತೆ, ಬೆಂಗಳೂರು - 560026",
+              domainLabel: "ಡೊಮೇನ್:",
+              emailLabel: "ಇಮೇಲ್:",
+              callLabel: "ಕರೆ:"
+            },
+            te: {
+              badge: "అగ్రిమార్ట్",
+              title: "అగ్రిమార్ట్ ఇండియా",
+              description: "బెంగళూరులో ఉన్న అగ్రిమార్ట్‌ను Ratnagiri Impex Pvt. Ltd. నిర్వహిస్తోంది మరియు వ్యవసాయ వ్యాపారంలో దీర్ఘ అనుభవం కలిగి ఉంది.",
+              productsLabel: "ఉత్పత్తులు:",
+              productsText: "విత్తనాలు, ఎరువులు, ఫంగిసైడ్లు, ఇన్సెక్టిసైడ్లు మరియు పంట పోషణ ఉత్పత్తులు.",
+              officeLabel: "కార్యాలయం:",
+              officeText: "మైసూరు రోడ్, బెంగళూరు - 560026",
+              domainLabel: "డొమైన్:",
+              emailLabel: "ఈమెయిల్:",
+              callLabel: "కాల్:"
+            },
+            ta: {
+              badge: "அக்ரிமார்ட்",
+              title: "அக்ரிமார்ட் இந்தியா",
+              description: "பெங்களூரை மையமாக கொண்ட அக்ரிமார்டை Ratnagiri Impex Pvt. Ltd. முன்னெடுக்கிறது; இதற்கு நீண்டகால வேளாண் அனுபவம் உள்ளது.",
+              productsLabel: "தயாரிப்புகள்:",
+              productsText: "விதைகள், உரங்கள், ஃபங்கிசைட்கள், இன்செக்டிசைட்கள் மற்றும் பயிர் ஊட்டச்சத்து தயாரிப்புகள்.",
+              officeLabel: "அலுவலகம்:",
+              officeText: "மைசூர் ரோடு, பெங்களூரு - 560026",
+              domainLabel: "டொமைன்:",
+              emailLabel: "மின்னஞ்சல்:",
+              callLabel: "அழைப்பு:"
+            }
+          }[lang] || {
+            badge: "Agrimart",
+            title: "Agrimart India",
+            description: "Based at Bangalore, Agrimart is marketed by Ratnagiri Impex Pvt. Ltd. with a long agriculture business background.",
+            productsLabel: "Products:",
+            productsText: "seeds, fertilizers, fungicides, insecticides, and crop nutrition products.",
+            officeLabel: "Office:",
+            officeText: "Mysore Road, Bangalore - 560026",
+            domainLabel: "Domain:",
+            emailLabel: "Email:",
+            callLabel: "Call:"
+          };
+          const farmerHelpText = {
+            en: {
+              badge: "Farmer Helpline",
+              title: "English Farmer Support",
+              description: "Get practical support from an English-friendly farming consultant based near Bangalore.",
+              supportLabel: "Support For:",
+              supportText: "English-speaking farmers",
+              contactLabel: "Contact:",
+              contactText: "Amruta Sanjeevani Farms (Bangalore)",
+              phoneLabel: "Phone:",
+              phoneHref: "tel:+919986072460",
+              phoneText: "+91 9986072460",
+              languagesLabel: "Languages:",
+              languagesText: "English + Kannada",
+              bestForLabel: "Best For:",
+              bestForText: "Organic farming and farm setup consultancy",
+              noteLabel: "Note:",
+              noteText: "Useful for farmers seeking guidance in English.",
+              useGuideLabel: "Use Guide:",
+              useGuideText: "English → Amruta Sanjeevani"
+            },
+            hi: {
+              badge: "किसान हेल्पलाइन",
+              title: "हिंदी किसान सहायता",
+              description: "पूरे भारत में तुरंत कृषि सलाह पाने के लिए सरकारी किसान कॉल सेंटर का उपयोग करें।",
+              supportLabel: "सहायता हेतु:",
+              supportText: "हिंदी बोलने वाले किसान",
+              contactLabel: "संपर्क:",
+              contactText: "किसान कॉल सेंटर (सरकारी हेल्पलाइन)",
+              phoneLabel: "फोन:",
+              phoneHref: "tel:18001801551",
+              phoneText: "1800-180-1551",
+              languagesLabel: "भाषाएँ:",
+              languagesText: "हिंदी + सभी प्रमुख भारतीय भाषाएँ",
+              bestForLabel: "सबसे उपयुक्त:",
+              bestForText: "तुरंत विशेषज्ञ सलाह कभी भी",
+              noteLabel: "नोट:",
+              noteText: "सरकारी सहायता केंद्र, तुरंत सलाह के लिए उपयोगी।",
+              useGuideLabel: "उपयोग मार्गदर्शिका:",
+              useGuideText: "Hindi → Kisan Call Center"
+            },
+            kn: {
+              badge: "ರೈತ ಸಹಾಯವಾಣಿ",
+              title: "ಕನ್ನಡ ರೈತ ಸಹಾಯ",
+              description: "ಕನ್ನಡದಲ್ಲಿ ಸ್ಥಳೀಯ ಕೃಷಿ ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ ದಕ್ಷಿಣ ಕನ್ನಡ ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರವನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+              supportLabel: "ಸಹಾಯಕ್ಕಾಗಿ:",
+              supportText: "ಕನ್ನಡ ಭಾಷೆಯ ರೈತರು",
+              contactLabel: "ಸಂಪರ್ಕ:",
+              contactText: "Krishi Vigyan Kendra (KVK) – Dakshina Kannada",
+              phoneLabel: "ದೂರವಾಣಿ:",
+              phoneHref: "tel:+9108257204370",
+              phoneText: "+91 08257-204370",
+              languagesLabel: "ಭಾಷೆಗಳು:",
+              languagesText: "Kannada + English",
+              bestForLabel: "ಉತ್ತಮ ಬಳಕೆ:",
+              bestForText: "ಸ್ಥಳೀಯ ಕೃಷಿ ಸಹಾಯ, ಮಣ್ಣು ಪರೀಕ್ಷೆ, ತರಬೇತಿ",
+              noteLabel: "ಸೂಚನೆ:",
+              noteText: "ಸರ್ಕಾರಿ ತಜ್ಞರ ಸಹಾಯ ಲಭ್ಯ.",
+              useGuideLabel: "ಬಳಕೆ ಮಾರ್ಗದರ್ಶಿ:",
+              useGuideText: "Kannada → KVK"
+            },
+            te: {
+              badge: "రైతు హెల్ప్‌లైన్",
+              title: "తెలుగు రైతు సహాయం",
+              description: "ప్రాక్టికల్ వ్యవసాయ సలహాల కోసం తెలుగు మాట్లాడే ప్రోగ్రెసివ్ రైతును సంప్రదించండి.",
+              supportLabel: "సహాయం కోసం:",
+              supportText: "తెలుగు రైతులు",
+              contactLabel: "సంప్రదించండి:",
+              contactText: "A.V. Prasada Reddy (Progressive Farmer)",
+              phoneLabel: "ఫోన్:",
+              phoneHref: "tel:+919440381477",
+              phoneText: "+91 94403 81477",
+              languagesLabel: "భాషలు:",
+              languagesText: "Telugu + Hindi + English",
+              bestForLabel: "బెస్ట్ ఫర్:",
+              bestForText: "ప్రాక్టికల్ వ్యవసాయ మార్గదర్శకం",
+              noteLabel: "గమనిక:",
+              noteText: "రైతు అనుభవంపై ఆధారిత సలహా కోసం అనుకూలం.",
+              useGuideLabel: "వాడుక గైడ్:",
+              useGuideText: "Telugu → Prasada Reddy"
+            },
+            ta: {
+              badge: "விவசாயி உதவி",
+              title: "தமிழ் விவசாய உதவி",
+              description: "தமிழில் பயிர் திட்டமிடல் மற்றும் வயல் அனுபவ உதவிக்காக இந்த தொடர்பை பயன்படுத்தலாம்.",
+              supportLabel: "உதவி பெற:",
+              supportText: "தமிழ் பேசும் விவசாயிகள்",
+              contactLabel: "தொடர்பு:",
+              contactText: "A. Chandra Sekaran (Progressive Farmer – Chennai)",
+              phoneLabel: "தொலைபேசி:",
+              phoneHref: "tel:+919444461050",
+              phoneText: "+91 9444461050",
+              languagesLabel: "மொழிகள்:",
+              languagesText: "Tamil + English",
+              bestForLabel: "சிறந்த பயன்பாடு:",
+              bestForText: "பயிர் திட்டமிடல் மற்றும் வயல் அனுபவம்",
+              noteLabel: "குறிப்பு:",
+              noteText: "தமிழில் நேரடி விவசாய ஆலோசனை பெற உதவும்.",
+              useGuideLabel: "பயன்பாட்டு வழிகாட்டி:",
+              useGuideText: "Tamil → Chandra Sekaran"
+            }
+          }[lang] || {
+            badge: "Farmer Helpline",
+            title: "English Farmer Support",
+            description: "Get practical support from an English-friendly farming consultant based near Bangalore.",
+            supportLabel: "Support For:",
+            supportText: "English-speaking farmers",
+            contactLabel: "Contact:",
+            contactText: "Amruta Sanjeevani Farms (Bangalore)",
+            phoneLabel: "Phone:",
+            phoneHref: "tel:+919986072460",
+            phoneText: "+91 9986072460",
+            languagesLabel: "Languages:",
+            languagesText: "English + Kannada",
+            bestForLabel: "Best For:",
+            bestForText: "Organic farming and farm setup consultancy",
+            noteLabel: "Note:",
+            noteText: "Useful for farmers seeking guidance in English.",
+            useGuideLabel: "Use Guide:",
+            useGuideText: "English → Amruta Sanjeevani"
+          };
+          $("#pageTitle").text(t.title);
+          $("#pageSubtitle").text(t.subtitle);
+          $("#uploadButton").text(t.upload);
+          $("#navAbout").text(extra.navAbout);
+          $("#navContact").text(extra.navContact);
+          $("#navChatBot").text(extra.navChatBot);
+          $("#navMarket").text(extra.navMarket);
+          $("#dragText").text(t.drag);
+          $("#fileTypeText").text(t.filetype);
+          $("#predictionHeading").text(extra.predictionHeading);
+          $("#resultLabel").text(t.result);
+          $("#confidenceLabel").text(t.confidence);
+          $("#descriptionLabel").text(t.description);
+          $("#uploadStatus").text(extra.processing);
+          $("#cancelUploadText").text(extra.cancel);
+          $("#agrimartBadge").text(agrimartText.badge);
+          $("#agrimartTitle").text(agrimartText.title);
+          $("#agrimartDescription").text(agrimartText.description);
+          $("#agrimartProductsLabel").text(agrimartText.productsLabel);
+          $("#agrimartProductsText").text(agrimartText.productsText);
+          $("#agrimartOfficeLabel").text(agrimartText.officeLabel);
+          $("#agrimartOfficeText").text(agrimartText.officeText);
+          $("#agrimartDomainLabel").text(agrimartText.domainLabel);
+          $("#agrimartEmailLabel").text(agrimartText.emailLabel);
+          $("#agrimartCallLabel").text(agrimartText.callLabel);
+          $("#farmerHelpBadge").text(farmerHelpText.badge);
+          $("#farmerHelpTitle").text(farmerHelpText.title);
+          $("#farmerHelpDescription").text(farmerHelpText.description);
+          $("#farmerHelpSupportLabel").text(farmerHelpText.supportLabel);
+          $("#farmerHelpSupportText").text(farmerHelpText.supportText);
+          $("#farmerHelpContactLabel").text(farmerHelpText.contactLabel);
+          $("#farmerHelpContactText").text(farmerHelpText.contactText);
+          $("#farmerHelpPhoneLabel").text(farmerHelpText.phoneLabel);
+          $("#farmerHelpPhoneLink").attr("href", farmerHelpText.phoneHref).text(farmerHelpText.phoneText);
+          $("#farmerHelpLanguagesLabel").text(farmerHelpText.languagesLabel);
+          $("#farmerHelpLanguagesText").text(farmerHelpText.languagesText);
+          $("#farmerHelpBestForLabel").text(farmerHelpText.bestForLabel);
+          $("#farmerHelpBestForText").text(farmerHelpText.bestForText);
+          $("#farmerHelpNoteLabel").text(farmerHelpText.noteLabel);
+          $("#farmerHelpNoteText").text(farmerHelpText.noteText);
+          $("#farmerHelpUseGuideLabel").text(farmerHelpText.useGuideLabel);
+          $("#farmerHelpUseGuideText").text(farmerHelpText.useGuideText);
+          if (!speaking) {
+            $("#speakButton").text(t.speak);
+          }
+          $("#footerText").text(t.footer);
+        }
+
+        // apply language change to the whole page including about/contact content
+        async function applyLanguageToPage(lang) {
+          updateLanguage(lang);
+          await refreshPredictionTranslations(lang);
+
+          // if on about/contact pages, ask backend for content
+          const pageId = $("body").data("page"); 
+          if (pageId) {
+            try {
+              const res = await axios.post("/translate_content", { page: pageId, lang: lang });
+              if (res.status === 200 && res.data && res.data.text) {
+                $("#pageContent").html(res.data.text);
+              }
+            } catch (e) {
+              console.error("Translate content error", e);
+            }
+          }
+        }
+
+        languageSelect.addEventListener("change", (e) => {
+          currentLang = e.target.value;
+          applyLanguageToPage(currentLang);
+        });
+
+        function loadVoices() {
+          availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+        }
+
+        function getSpeechLang(lang) {
+          const langMap = {
+            en: "en-US",
+            hi: "hi-IN",
+            ta: "ta-IN",
+            te: "te-IN",
+            kn: "kn-IN"
+          };
+          return langMap[(lang || "en").split("-")[0].toLowerCase()] || "en-US";
+        }
+
+        function getBestVoice(lang) {
+          const speechLang = getSpeechLang(lang).toLowerCase();
+          const shortLang = speechLang.split("-")[0];
+          return availableVoices.find(voice => voice.lang && voice.lang.toLowerCase() === speechLang)
+            || availableVoices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith(shortLang))
+            || null;
+        }
+
+        function updateSpeakButtonState(isBusy) {
+          speaking = isBusy;
+          speakButton.textContent = isBusy ? getUiExtras(currentLang).speaking : (translations[currentLang]?.speak || translations.en.speak);
+        }
+
+        function stopSpeechPlayback() {
+          if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+          }
+
+          if (currentSpeechAudio) {
+            currentSpeechAudio.pause();
+            currentSpeechAudio.currentTime = 0;
+            currentSpeechAudio = null;
+          }
+
+          updateSpeakButtonState(false);
+        }
+
+        async function speakWithBrowser(textToSpeak, lang) {
+          if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+            return false;
+          }
+
+          window.speechSynthesis.cancel();
+          loadVoices();
+
+          return new Promise((resolve) => {
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = getSpeechLang(lang);
+
+            const matchedVoice = getBestVoice(lang);
+            if (matchedVoice) {
+              utterance.voice = matchedVoice;
+            }
+
+            utterance.rate = 1;
+            utterance.pitch = 1;
+
+            let hasStarted = false;
+            let settled = false;
+
+            const finish = (value) => {
+              if (settled) return;
+              settled = true;
+              resolve(value);
+            };
+
+            utterance.onstart = () => {
+              hasStarted = true;
+              finish(true);
+            };
+
+            utterance.onend = () => {
+              updateSpeakButtonState(false);
+              if (!hasStarted) {
+                finish(false);
+              }
+            };
+
+            utterance.onerror = () => {
+              updateSpeakButtonState(false);
+              finish(false);
+            };
+
+            updateSpeakButtonState(true);
+            window.speechSynthesis.speak(utterance);
+
+            setTimeout(() => {
+              if (!hasStarted) {
+                window.speechSynthesis.cancel();
+                updateSpeakButtonState(false);
+                finish(false);
+              }
+            }, 1200);
+          });
+        }
+
+        if ("speechSynthesis" in window) {
+          loadVoices();
+          window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        // === File upload / Drag & Drop handlers ===
+        uploadButton.onclick = () => input.click();
+        input.onchange = () => handleFile(input.files[0]);
+        dropArea.addEventListener("dragover", e => { e.preventDefault(); dropArea.classList.add("active"); });
+        dropArea.addEventListener("dragleave", () => dropArea.classList.remove("active"));
+        dropArea.addEventListener("drop", e => {
+          e.preventDefault();
+          dropArea.classList.remove("active");
+          handleFile(e.dataTransfer.files[0]);
+        });
+
+        function handleFile(f) {
+          if (!f) return;
+          file = f;
+          showPreview(file);
+          sendImage(file);
+        }
+
+        // === Show Preview ===
+        function showPreview(file) {
+          const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/bmp"];
+          if (!validTypes.includes(file.type)) {
+            toastr.error(translations[currentLang].invalidFile);
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = e => $("#previewImage").attr("src", e.target.result);
+          reader.readAsDataURL(file);
+        }
+
+        // === Send image to backend and handle response ===
+        async function sendImage(file) {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          $(".loadingArea").show();
+          $(".resultArea").hide();
+
+          try {
+            const res = await axios.post("/predict", formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+              timeout: 45000
+            });
+            $(".loadingArea").hide();
+
+            if (res.status === 200 && res.data) {
+              const label = res.data.label || "Unknown";
+              const confidence = res.data["confidence score"] || "N/A";
+              lastPredictionLabel = label;
+              lastConfidence = confidence;
+
+              // Translate disease name for display (frontend dictionary)
+              const translatedLabel = (diseaseTranslations[label] && diseaseTranslations[label][currentLang]) ? diseaseTranslations[label][currentLang] : label;
+              $("#result").text(translatedLabel);
+              $("#confidenceScore").text(confidence);
+
+              // Fetch description (backend returns array of points)
+              let description = [];
+              try {
+                const currentSelectedLang = languageSelect.value;
+                const descRes = await axios.post("/describe", { disease: label, lang: currentSelectedLang });
+                if (descRes.status === 200 && descRes.data && descRes.data.description) {
+                  description = descRes.data.description;
+                  lastDescription = Array.isArray(description) ? description : [description];
+                }
+              } catch (err) {
+                console.error(err);
+              }
+
+              if (Array.isArray(lastDescription) && lastDescription.length) {
+                const listHtml = lastDescription.map(pt => {
+                  // If server returned HTML (e.g. product link), render it as HTML.
+                  // Otherwise escape to avoid injection.
+                  if (/<a\s+/i.test(pt)) {
+                    return `<li>${pt}</li>`;
+                  } else {
+                    return `<li>${escapeHtml(pt)}</li>`;
+                  }
+                }).join("");
+                $("#diseaseDescription").html(`<ul>${listHtml}</ul>`);
+              } else {
+                $("#diseaseDescription").text(getUiExtras(currentLang).noDescription);
+              }
+
+              // NEW: show supplement modal if backend provided data
+              if (res.data.supplement) {
+                try {
+                  showSupplement(res.data.supplement);
+                } catch (e) {
+                  console.error("showSupplement failed", e);
+                }
+              }
+
+              $(".resultArea").fadeIn();
+            } else {
+              toastr.error(translations[currentLang].uploadError);
+            }
+          } catch (err) {
+            $(".loadingArea").hide();
+            console.error("Upload/predict error:", err);
+            toastr.error(translations[currentLang].uploadError);
+          }
+        }
+
+        // escape HTML to avoid injection
+        function escapeHtml(unsafe) {
+          // Corrected escaping logic
+          return unsafe.replace(/[&<>"']/g, function(m) {
+              return {
+                  '&': '&amp;',
+                  '<': '&lt;',
+                  '>': '&gt;',
+                  '"': '&quot;',
+                  "'": '&#39;'
+              }[m];
+          });
+        }
+
+        // === Speak Description ===
+        speakButton.addEventListener("click", async () => {
+          if (!lastDescription || !lastDescription.length) {
+            toastr.warning(translations[currentLang].description + " not available!");
+            return;
+          }
+
+          if (speaking) {
+            stopSpeechPlayback();
+            return;
+          }
+
+          try {
+            stopSpeechPlayback();
+            const textToSpeak = lastDescription.map(pt => pt.replace(/<[^>]+>/g, '')).join(". ");
+            const currentSelectedLang = languageSelect.value;
+            const browserSpeechWorked = await speakWithBrowser(textToSpeak, currentSelectedLang);
+            if (browserSpeechWorked) {
+              return;
+            }
+
+            updateSpeakButtonState(true);
+            const response = await fetch("/speak", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: textToSpeak, lang: currentSelectedLang })
+            });
+            if (!response.ok) throw new Error("Speech generation failed!");
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            currentSpeechAudio = new Audio(audioUrl);
+            currentSpeechAudio.onended = () => {
+              URL.revokeObjectURL(audioUrl);
+              currentSpeechAudio = null;
+              updateSpeakButtonState(false);
+            };
+            currentSpeechAudio.onerror = () => {
+              URL.revokeObjectURL(audioUrl);
+              currentSpeechAudio = null;
+              updateSpeakButtonState(false);
+            };
+            await currentSpeechAudio.play();
+          } catch (error) {
+            stopSpeechPlayback();
+            console.error(error);
+            toastr.error("Failed to play description voice!");
+          }
+        });
+
+        window.addEventListener("beforeunload", stopSpeechPlayback);
+        window.addEventListener("pagehide", stopSpeechPlayback);
+
+        // === Cancel / Reset upload ===
+        $(".cancelUpload").click(() => {
+          stopSpeechPlayback();
+          $("#previewImage").attr("src", "../static/images/drag_drop.svg");
+          $(".loadingArea, .resultArea").hide();
+          lastPredictionLabel = "";
+          lastConfidence = "";
+          lastDescription = [];
+        });
+
+        // Initialize page: set data-page-based content if present
+        const pageId = $("body").data("page"); 
+        if (pageId) {
+          applyLanguageToPage(currentLang);
+        } else {
+          updateLanguage(currentLang);
+        }
+      });
+    </script>
+  {% endblock scripts %}
+  <!-- Supplement suggestion modal (integrated "tabout" UI) -->
+  <div class="modal fade" id="supplementModal" tabindex="-1" aria-labelledby="supplementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="supplementModalLabel" class="modal-title">Supplement / Suggestion</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row mb-4">
+              <div class="col-md-6 text-center">
+                <img id="supImageMain" src="/static/images/drag_drop.svg" alt="Supplement image" class="img-fluid rounded" style="max-height:360px; object-fit:cover;">
+              </div>
+              <div class="col-md-6">
+                <h4 id="supTitle" class="fw-bold">Supplement / Fertilizer</h4>
+                <p id="supPredDesc" class="small text-muted"></p>
+                <hr>
+                <h6 class="mb-1">Benefits / Notes</h6>
+                <p id="supPrevent" class="small"></p>
+
+                <div class="mt-3">
+                  <img id="supSimage" src="/static/images/drag_drop.svg" alt="Product" style="width:160px;height:180px;object-fit:cover;" class="rounded mb-2">
+                  <div><strong id="supSname"></strong></div>
+                  <a id="supBuyLink" target="_blank" class="btn btn-success btn-sm mt-2">Buy Product</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <h6 class="mb-2">Summary</h6>
+                <div id="supSummary" class="small"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      // ...existing code...
+
+      // Function to populate & show supplement modal.
+      function showSupplement(data = {}) {
+        // data expected keys: title, image_url, desc, prevent, simage, sname, buy_link, pred
+        $('#supplementModalLabel').text(data.title || (data.sname ? data.sname : 'Supplement Suggestion'));
+        $('#supTitle').text(data.title || (data.sname ? data.sname : 'Supplement / Fertilizer'));
+        $('#supImageMain').attr('src', data.image_url || data.simage || '/static/images/drag_drop.svg');
+        $('#supPredDesc').html(data.desc || '');
+        $('#supPrevent').html(data.prevent || '');
+        $('#supSimage').attr('src', data.simage || data.image_url || '/static/images/drag_drop.svg');
+        $('#supSname').text(data.sname || '');
+        $('#supBuyLink').attr('href', data.buy_link || '#');
+
+        // optional summary (if provided)
+        if (data.summary) {
+          $('#supSummary').html(data.summary);
+        } else {
+          $('#supSummary').html('');
+        }
+
+        // show bootstrap modal
+        const modalEl = document.getElementById('supplementModal');
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      }
+
+      // --- integrate with existing prediction flow ---
+      // After successful prediction, backend may return a `supplement` object.
+      // If so, call showSupplement(res.data.supplement)
+      // Example update inside sendImage success block (ensure this is present in your sendImage):
+      //
+      // if (res.status === 200 && res.data) {
+      //   ... existing result handling ...
+      //   if (res.data.supplement) {
+      //     showSupplement(res.data.supplement);
+      //   }
+      // }
+
+      // If you want demo trigger (remove in production)
+      // $('#uploadButton').on('dblclick', () => showSupplement({
+      //   title: 'Demo Fertilizer',
+      //   image_url: '/static/images/fertilizer.jpg',
+      //   desc: 'Short description of fertilizer/product.',
+      //   prevent: 'Use as directed to improve soil nutrients.',
+      //   simage: '/static/images/fertilizer.jpg',
+      //   sname: 'All-Purpose Fertilizer',
+      //   buy_link: 'https://example.com/product1'
+      // }));
+    });
+  </script>
+</body>
+</html>
