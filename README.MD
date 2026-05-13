@@ -4,7 +4,151 @@ AI-powered tomato leaf disease detection web app built with Flask and TensorFlow
 
 ## UI Preview
 
-Web app:
+Web app:# 🌿 AgriBot-AI
+### Multilingual Tomato Disease Detection & Voice Advisory System with Chatbot
+
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.19-FF6F00?style=flat&logo=tensorflow&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.1-000000?style=flat&logo=flask&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+
+---
+
+## 📌 About
+
+AgriBot-AI is an open-source, AI-powered web platform that helps farmers identify **tomato leaf diseases** from a photo and receive instant treatment advice — in their own language, with voice support.
+
+It combines deep learning, multilingual translation, text-to-speech, a product marketplace, and an intelligent agricultural chatbot in a single deployable application.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---|---|
+| 🔬 **Disease Detection** | CNN model — 10 classes, ~91% accuracy |
+| 🌐 **5 Languages** | English, Hindi, Kannada, Telugu, Tamil |
+| 🔊 **Voice Advisory** | gTTS audio descriptions in your chosen language |
+| 🛒 **Marketplace** | Recommended products with images and buy links |
+| 🤖 **AgriBot Chatbot** | Covers soil, pests, fertilizer, irrigation, market |
+| 🐳 **Docker Ready** | Containerized with GitHub Actions CI/CD |
+
+---
+
+## 🍅 Detected Disease Classes
+
+`Early Blight` `Late Blight` `Bacterial Spot` `Bacterial Speck`
+`Leaf Mold` `Septoria Leaf Spot` `Target Spot` `Spider Mites`
+`Tomato Mosaic Virus` ✅ `Healthy`
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| ML / AI | TensorFlow 2.19, Keras, OpenCV |
+| Backend | Python 3.9+, Flask 3.1, Waitress |
+| Frontend | HTML5, CSS3, Bootstrap 5, JavaScript |
+| Translation | deep-translator (Google Translate) |
+| Voice (TTS) | gTTS (Google Text-to-Speech) |
+| Deployment | Docker, GitHub Actions CI/CD |
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/harshithdn/AgriBot-AI.git
+cd AgriBot-AI
+
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the app
+python app.py
+
+# Open in browser
+http://127.0.0.1:5000
+```
+
+**Docker:**
+```bash
+docker build -t agribot-ai .
+docker run -p 8080:8080 agribot-ai
+# Open: http://localhost:8080
+```
+
+---
+
+## 📁 Project Structure
+
+```
+AgriBot-AI/
+├── app.py                  # Flask app — routes, prediction, TTS, chatbot
+├── prediction.py           # CNN model training script
+├── requirements.txt
+├── Dockerfile
+├── supplement_info.csv     # Marketplace product data
+├── model/
+│   └── model_tomato.h5    # Trained CNN model
+├── templates/              # HTML pages
+├── static/                 # JS, CSS, generated audio
+└── .github/workflows/      # CI/CD pipeline
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/predict` | Upload leaf image → disease + confidence |
+| `POST` | `/describe` | Get translated 12-point advisory |
+| `POST` | `/speak` | Generate MP3 voice advisory via gTTS |
+| `POST` | `/chat-bot/api` | Send message → get AgriBot response |
+| `GET` | `/market` | Browse supplement marketplace |
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+# Optional: enables LLM-powered chatbot responses
+CHATBOT_API_KEY=your_openrouter_or_openai_key_here
+```
+
+> Without this key, AgriBot uses its built-in keyword-matching engine.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+**Credits:** Kaggle PlantVillage dataset · TensorFlow · Flask · deep-translator · gTTS
+
+---
+
+<p align="center">Built with 🌿 for Indian farmers · NMIT Bengaluru · 2024–2025</p>
 
 <p align="center">
   <img src="./assets/web_1.png" alt="Tomato disease classification home page">
