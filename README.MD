@@ -1,4 +1,4 @@
-# Tomato Disease Classification
+# Multilingual Tomato Disease Detection and Voice Advisory System with Chatbot
 
 AI-powered tomato leaf disease detection web app built with Flask and TensorFlow, with multilingual farmer support, spoken descriptions, market recommendations, and an agriculture chatbot.
 
