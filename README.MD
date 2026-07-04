@@ -119,7 +119,7 @@ Tomato-Disease-Classification/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/harshithdn/Tomato-Disease-Classification.git
+git clone https://github.com/rameshmarathi/Tomato-Disease-Classification.git
 cd Tomato-Disease-Classification
 ```
 
