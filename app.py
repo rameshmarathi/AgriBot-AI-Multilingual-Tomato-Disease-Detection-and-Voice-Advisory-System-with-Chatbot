@@ -492,8 +492,8 @@ def translate_content():
             "contact_h2": {"en": "Contact Me"},
             "contact_p": {"en": "Feel free to reach out for collaboration, suggestions, or queries."},
             "contact_location": {"en": "Bangalore, Karnataka, India"},
-            "contact_phone_link": {"en": "+91 7483367339"},
-            "contact_email_link": {"en": "harshithdn27@gmail.com"},
+            "contact_phone_link": {"en": "+91 9483446327"},
+            "contact_email_link": {"en": "rameshmarathi7765@gmail.com"},
             "footer_p": {"en": "© 2025 Tomato Disease Prediction | All rights reserved"},
 
             # Add new translations for prevention section
