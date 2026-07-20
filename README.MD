@@ -273,7 +273,11 @@ docker run -p 8080:8080 tomato-disease-classifier
 
 ## Author
 
+<<<<<<< HEAD
 Ramesh Marathi 
+=======
+Ramesh Marathi  
+>>>>>>> 6f883d8 (Update author information in README)
 Bangalore, Karnataka, India
 
 - Phone: `+91 9483446327`
