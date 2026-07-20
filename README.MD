@@ -19,7 +19,7 @@ Prediction result:
 About page:
 
 <p align="center">
-  <img src="C:\\GitHub\\Tomato-Disease-Classification-main\\OutPut\\about.png" alt="About page preview">
+  <img src="./assets/OutPut/About.png" alt="About page preview">
 </p>
 
 Chatbot page:
