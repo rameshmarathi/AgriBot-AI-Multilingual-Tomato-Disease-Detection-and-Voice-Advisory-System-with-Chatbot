@@ -19,7 +19,7 @@ Prediction result:
 About page:
 
 <p align="center">
-  <img src="./assets/about.png" alt="About page preview">
+  <img src="C:\\GitHub\\Tomato-Disease-Classification-main\\OutPut\\about.png" alt="About page preview">
 </p>
 
 Chatbot page:
@@ -273,11 +273,11 @@ docker run -p 8080:8080 tomato-disease-classifier
 
 ## Author
 
-Harshith D N  
+Ramesh Marathi 
 Bangalore, Karnataka, India
 
-- Phone: `+91 7483367339`
-- Email: `harshithdn27@gmail.com`
+- Phone: `+91 9483446327`
+- Email: `rameshmarathi7765@gmail.com`
 
 ## License
 
